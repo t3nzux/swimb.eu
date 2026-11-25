@@ -1046,7 +1046,7 @@ void main() {
     });
     const id = li.dataset.photo, name = btn.textContent.trim();
     const load = srcs => { if (!srcs.length) return; const im = new Image(); im.alt = name; im.onload = () => frame.appendChild(im); im.onerror = () => load(srcs.slice(1)); im.src = srcs[0]; };
-    load([`photos/${id}.jpg`, `photos/${id}-portrait.jpg`]);
+    load([`photos/${id}.jpg`, `${id}.jpg`, `photos/${id}-portrait.jpg`]);
   });
 
   /* ---------- Why: words light up in reading order while the statement is held on screen ---------- */
