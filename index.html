@@ -139,30 +139,25 @@ main, footer { position: relative; z-index: 2; }
 /* From the team onward: plain black */
 .dark { position: relative; background: linear-gradient(rgba(0, 0, 0, 0), var(--bg) 24vh); }
 
-/* Team: open a name to see more */
+/* Team: both founders open on the page; photo beside name, role, quote and what they do */
 .team { padding-top: clamp(140px, 22vh, 260px); }
-.people { list-style: none; margin: clamp(36px, 4.5vw, 64px) 0 0; padding: 0; border-top: 1px solid var(--rule); }
-.person { border-bottom: 1px solid var(--rule); }
-.person h3 { font-size: clamp(42px, 6.4vw, 96px); line-height: 1; letter-spacing: -.05em; }
-.who { appearance: none; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: clamp(24px, 3.2vw, 44px) 0; margin: 0; border: 0; background: none; cursor: pointer; text-align: left; font: inherit; letter-spacing: inherit; line-height: inherit; }
-.who > span { transition: transform .7s var(--ease); }
-.who:hover > span { transform: translateX(12px); }
-.who:focus-visible { outline-offset: -2px; }
-.plus { position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .24); transition: border-color .3s, transform .6s var(--ease); }
-.plus::before, .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 18px; height: 1.5px; margin: -.75px 0 0 -9px; border-radius: 2px; background: var(--fg); }
-.plus::after { transform: rotate(90deg); }
-.who:hover .plus { border-color: rgba(255, 255, 255, .6); }
-.person.open .plus { transform: rotate(45deg); border-color: var(--accent); }
-.more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .8s var(--ease); }
-.person.open .more { grid-template-rows: 1fr; }
-.more-in { min-height: 0; overflow: hidden; }
-.bio { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(20px, 4vw, 64px); align-items: end; padding-bottom: clamp(30px, 4vw, 52px); }
-@media (max-width: 720px) { .bio { grid-template-columns: 1fr; } .bio .pic { max-width: 300px; } }
-.pic { position: relative; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 22px; overflow: hidden; background: radial-gradient(120% 85% at 30% 0%, #0b4651, #04161b 58%, #010507); }
+.people { display: grid; gap: clamp(72px, 10vw, 150px); margin-top: clamp(48px, 6vw, 96px); }
+.person { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: clamp(28px, 6vw, 100px); align-items: center; }
+.person.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); }
+.person.flip .pic { order: 2; }
+@media (max-width: 760px) { .person, .person.flip { grid-template-columns: 1fr; gap: 28px; } .person.flip .pic { order: 0; } .pic { max-width: 320px; } }
+.pic { position: relative; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 24px; overflow: hidden; background: radial-gradient(120% 85% at 30% 0%, #0b4651, #04161b 58%, #010507); }
+.pic::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); pointer-events: none; }
 .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.ini { position: absolute; left: 7%; bottom: 3%; font: 500 clamp(64px, 10vw, 140px)/.8 var(--display); letter-spacing: -.06em; color: rgba(255, 255, 255, .16); }
-.quote { margin: 0; font: 500 clamp(24px, 2.8vw, 40px)/1.18 var(--display); letter-spacing: -.025em; text-wrap: balance; max-width: 24ch; }
-.bio-p { margin-top: 20px; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.5; color: #e8e8ed; max-width: 42ch; }
+.ini { position: absolute; left: 7%; bottom: 3%; font: 500 clamp(80px, 11vw, 150px)/.8 var(--display); letter-spacing: -.06em; color: rgba(255, 255, 255, .16); }
+.person h3 { font-size: clamp(42px, 5.4vw, 80px); line-height: .96; letter-spacing: -.05em; }
+.p-role { margin-top: 14px; font: 500 clamp(18px, 1.6vw, 21px)/1.3 var(--display); letter-spacing: -.01em; color: var(--accent); }
+.quote { margin: clamp(24px, 2.8vw, 36px) 0 0; font: 500 clamp(22px, 2.3vw, 32px)/1.24 var(--display); letter-spacing: -.02em; text-wrap: balance; max-width: 26ch; }
+.facts { list-style: none; margin: clamp(28px, 3.2vw, 44px) 0 0; padding: 0; max-width: 460px; }
+.facts li { padding: 14px 0; border-top: 1px solid var(--rule); font-size: clamp(17px, 1.4vw, 19px); line-height: 1.4; color: #c7c7cc; }
+.facts li:last-child { border-bottom: 1px solid var(--rule); }
+.facts li::before { content: ""; display: inline-block; width: 14px; height: 2px; margin-right: 14px; vertical-align: .32em; border-radius: 2px; background: var(--accent); }
+.facts b { font-weight: 500; color: var(--fg); }
 
 /* Why: a statement that lights up word by word as you scroll */
 .why { position: relative; height: 200vh; height: 200svh; }
@@ -226,9 +221,6 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
 @media (prefers-reduced-motion: no-preference) {
   .js .hero h1 { animation: rise 1.6s .35s var(--ease) both; }
   .js .hero p { animation: rise 1.6s .55s var(--ease) both; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .more, .plus, .who > span { transition: none; }
 }
 @keyframes rise { from { opacity: .55; transform: translateY(26px); } }
 </style>
@@ -306,38 +298,40 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
   <div class="dark">
   <section class="why" id="why" aria-label="Why we build SwimVision1">
     <div class="why-pin"><div class="wrap">
-      <p class="why-text" id="why-text"><span class="why-big" data-words>Everyone should have the right to swim independently.</span></p>
+      <p class="why-text" id="why-text"><span class="why-big" data-words>Everyone must have the right to swim independently.</span></p>
     </div></div>
   </section>
 
   <section class="wrap team" id="team" aria-labelledby="team-title">
     <h2 class="h2" id="team-title">Two swimmers.</h2>
-    <ul class="people">
-      <li class="person" data-photo="teoman">
-        <h3><button class="who" type="button" aria-expanded="false" aria-controls="more-teoman"><span>Teoman Civici</span><i class="plus" aria-hidden="true"></i></button></h3>
-        <div class="more" id="more-teoman"><div class="more-in">
-          <div class="bio">
-            <figure class="pic"><span class="ini" aria-hidden="true">TC</span></figure>
-            <div>
-              <blockquote class="quote">“Swimming gave me strength, calm and freedom. No one should miss out on that because they can’t see the line.”</blockquote>
-              <p class="bio-p">Co-founder. Competitive swimmer for 12 years and state champion.</p>
-            </div>
-          </div>
-        </div></div>
-      </li>
-      <li class="person" data-photo="filip">
-        <h3><button class="who" type="button" aria-expanded="false" aria-controls="more-filip"><span>Filip Ionescu</span><i class="plus" aria-hidden="true"></i></button></h3>
-        <div class="more" id="more-filip"><div class="more-in">
-          <div class="bio">
-            <figure class="pic"><span class="ini" aria-hidden="true">FI</span></figure>
-            <div>
-              <blockquote class="quote">“The best technology disappears. In the water you should feel the line, not the goggles.”</blockquote>
-              <p class="bio-p">Co-founder. Competitive swimmer for 12 years. Takes part in the Physics and Mathematics Olympiads and loves technology.</p>
-            </div>
-          </div>
-        </div></div>
-      </li>
-    </ul>
+    <div class="people">
+      <article class="person" data-photo="teoman">
+        <figure class="pic"><span class="ini" aria-hidden="true">TC</span></figure>
+        <div>
+          <h3>Teoman Civici</h3>
+          <p class="p-role">Co-founder</p>
+          <blockquote class="quote">“Swimming gave me strength, calm and freedom. No one should miss out on that because they can’t see the line.”</blockquote>
+          <ul class="facts">
+            <li><b>12 years</b> of competitive swimming</li>
+            <li><b>State champion</b> in swimming</li>
+            <li><b>Olympiads</b> in maths and physics</li>
+          </ul>
+        </div>
+      </article>
+      <article class="person flip" data-photo="filip">
+        <figure class="pic"><span class="ini" aria-hidden="true">FI</span></figure>
+        <div>
+          <h3>Filip Ionescu</h3>
+          <p class="p-role">Co-founder</p>
+          <blockquote class="quote">“The best technology disappears. In the water you should feel the line, not the goggles.”</blockquote>
+          <ul class="facts">
+            <li><b>12 years</b> of competitive swimming</li>
+            <li><b>Olympiads</b> in maths and physics</li>
+            <li><b>Technology</b> is his passion</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </section>
 
   <section class="wrap contact" id="contact" aria-labelledby="contact-title">
@@ -1036,15 +1030,9 @@ void main() {
   ["pointerup", "pointercancel"].forEach(n => swimScr.addEventListener(n, () => { B.hold = 0; }));
   swimScr.addEventListener("contextmenu", e => e.preventDefault());
 
-  /* ---------- Team: open a name; the photo appears once it exists in photos/ (teoman.jpg, filip.jpg) ---------- */
-  document.querySelectorAll(".person").forEach(li => {
-    const btn = li.querySelector(".who"), more = li.querySelector(".more"), frame = li.querySelector(".pic");
-    more.inert = true;
-    btn.addEventListener("click", () => {
-      const open = !li.classList.contains("open");
-      li.classList.toggle("open", open); btn.setAttribute("aria-expanded", open); more.inert = !open;
-    });
-    const id = li.dataset.photo, name = btn.textContent.trim();
+  /* ---------- Team: each photo appears once it exists (photos/<name>.jpg, or <name>.jpg at the site root) ---------- */
+  document.querySelectorAll(".person").forEach(card => {
+    const frame = card.querySelector(".pic"), id = card.dataset.photo, name = card.querySelector("h3").textContent.trim();
     const load = srcs => { if (!srcs.length) return; const im = new Image(); im.alt = name; im.onload = () => frame.appendChild(im); im.onerror = () => load(srcs.slice(1)); im.src = srcs[0]; };
     load([`photos/${id}.jpg`, `${id}.jpg`, `photos/${id}-portrait.jpg`]);
   });
