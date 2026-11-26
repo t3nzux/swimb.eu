@@ -145,19 +145,18 @@ main, footer { position: relative; z-index: 2; }
 .person { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: clamp(28px, 6vw, 100px); align-items: center; }
 .person.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); }
 .person.flip .pic { order: 2; }
-@media (max-width: 760px) { .person, .person.flip { grid-template-columns: 1fr; gap: 28px; } .person.flip .pic { order: 0; } .pic { max-width: 320px; } }
+.person.flip .say { justify-self: end; }
+@media (max-width: 760px) { .person, .person.flip { grid-template-columns: 1fr; gap: 28px; } .person.flip .pic { order: 0; } .person.flip .say { justify-self: stretch; } .pic { max-width: 320px; } }
 .pic { position: relative; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 24px; overflow: hidden; background: radial-gradient(120% 85% at 30% 0%, #0b4651, #04161b 58%, #010507); }
 .pic::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); pointer-events: none; }
 .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ini { position: absolute; left: 7%; bottom: 3%; font: 500 clamp(80px, 11vw, 150px)/.8 var(--display); letter-spacing: -.06em; color: rgba(255, 255, 255, .16); }
+.say { min-width: 0; }
 .person h3 { font-size: clamp(42px, 5.4vw, 80px); line-height: .96; letter-spacing: -.05em; }
-.p-role { margin-top: 14px; font: 500 clamp(18px, 1.6vw, 21px)/1.3 var(--display); letter-spacing: -.01em; color: var(--accent); }
-.quote { margin: clamp(24px, 2.8vw, 36px) 0 0; font: 500 clamp(22px, 2.3vw, 32px)/1.24 var(--display); letter-spacing: -.02em; text-wrap: balance; max-width: 26ch; }
-.facts { list-style: none; margin: clamp(28px, 3.2vw, 44px) 0 0; padding: 0; max-width: 460px; }
-.facts li { padding: 14px 0; border-top: 1px solid var(--rule); font-size: clamp(17px, 1.4vw, 19px); line-height: 1.4; color: #c7c7cc; }
-.facts li:last-child { border-bottom: 1px solid var(--rule); }
-.facts li::before { content: ""; display: inline-block; width: 14px; height: 2px; margin-right: 14px; vertical-align: .32em; border-radius: 2px; background: var(--accent); }
-.facts b { font-weight: 500; color: var(--fg); }
+.p-role { margin-top: 16px; font: 500 clamp(18px, 1.6vw, 21px)/1.3 var(--display); letter-spacing: -.01em; color: var(--accent); }
+.swim { margin-top: 4px; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.4; color: #c7c7cc; }
+.swim b { font-weight: 500; color: var(--fg); }
+.quote { margin: clamp(26px, 3vw, 40px) 0 0; font: 500 clamp(24px, 2.5vw, 36px)/1.22 var(--display); letter-spacing: -.02em; text-indent: -.42em; text-wrap: pretty; max-width: 24ch; }
 
 /* Why: a statement that lights up word by word as you scroll */
 .why { position: relative; height: 200vh; height: 200svh; }
@@ -307,28 +306,20 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
     <div class="people">
       <article class="person" data-photo="teoman">
         <figure class="pic"><span class="ini" aria-hidden="true">TC</span></figure>
-        <div>
+        <div class="say">
           <h3>Teoman Civici</h3>
           <p class="p-role">Co-founder</p>
+          <p class="swim"><b>12 years</b> of competitive swimming</p>
           <blockquote class="quote">“Swimming gave me strength, calm and freedom. No one should miss out on that because they can’t see the line.”</blockquote>
-          <ul class="facts">
-            <li><b>12 years</b> of competitive swimming</li>
-            <li><b>State champion</b> in swimming</li>
-            <li><b>Olympiads</b> in maths and physics</li>
-          </ul>
         </div>
       </article>
       <article class="person flip" data-photo="filip">
         <figure class="pic"><span class="ini" aria-hidden="true">FI</span></figure>
-        <div>
+        <div class="say">
           <h3>Filip Ionescu</h3>
           <p class="p-role">Co-founder</p>
+          <p class="swim"><b>12 years</b> of competitive swimming</p>
           <blockquote class="quote">“The best technology disappears. In the water you should feel the line, not the goggles.”</blockquote>
-          <ul class="facts">
-            <li><b>12 years</b> of competitive swimming</li>
-            <li><b>Olympiads</b> in maths and physics</li>
-            <li><b>Technology</b> is his passion</li>
-          </ul>
         </div>
       </article>
     </div>
