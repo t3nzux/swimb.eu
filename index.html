@@ -542,7 +542,7 @@ void main() {
   const MAIN_FS = `
 uniform vec2 uRes, uTan, uLine, uHeadDir;
 uniform vec3 uPos, uF, uR, uU;
-uniform float uTime, uDepth, uWallZ, uPoolW, uPoolL, uFog, uExpo, uHud, uHudFar, uHead, uTMark, uFade, uShaft, uMap, uLaneX, uVig, uRope, uSat, uFlow;
+uniform float uTime, uDepth, uWallZ, uPoolW, uPoolL, uFog, uExpo, uHud, uHudFar, uTipSoft, uHead, uTMark, uFade, uShaft, uMap, uLaneX, uVig, uRope, uSat, uFlow;
 uniform vec3 uFogC;
 uniform sampler2D uCaus;
 const vec3 SIG = vec3(0.70, 0.13, 0.10);
@@ -631,7 +631,7 @@ void main() {
   col *= 1.0 - uVig * smoothstep(0.55, 1.5, length(ndc * vec2(0.9, 1.05)));
   if (uHud > 0.0) {
     float dx = abs(p.x - uLaneX), ahead = p.z - ro.z;
-    float rng = isF * smoothstep(0.2, 0.9, ahead) * (1.0 - smoothstep(uHudFar * 0.55, uHudFar, ahead)) * step(uLine.x, p.z) * step(p.z, uLine.y - 0.32);
+    float rng = isF * smoothstep(0.2, 0.9, ahead) * (1.0 - smoothstep(uHudFar - uTipSoft, uHudFar, ahead)) * step(uLine.x, p.z) * step(p.z, uLine.y - 0.32);
     col = mix(col, YEL, (1.0 - smoothstep(fx * 1.1, fx * 2.2, dx)) * rng * uHud);
     col += YEL * exp(-dx / (fx * 10.0)) * rng * uHud * 0.2;
   }
@@ -642,17 +642,28 @@ void main() {
     col = mix(col, vec3(1.0), m * 0.7 * uHead);
   }
   if (uTMark > 0.0) {
-    vec2 d = abs(p.xz - vec2(uLaneX, uLine.y - 0.125)) - vec2(0.5, 0.125);
+    vec2 q2 = p.xz - vec2(uLaneX, uLine.y - 0.125);
+    vec2 d = abs(q2) - vec2(0.5, 0.125);
     float sd = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
-    float m = 1.0 - smoothstep(fx * 0.9, fx * 2.1, abs(sd - 0.07));
-    col = mix(col, YEL, clamp(m, 0.0, 1.0) * uTMark * isF);
+    float m = clamp(1.0 - smoothstep(fx * 0.9, fx * 2.1, abs(sd - 0.07)), 0.0, 1.0);
+    // distance along the outline from the near centre, where the line arrives (same on both sides)
+    float ax = abs(q2.x), s;
+    if (ax <= 0.5) s = q2.y < 0.0 ? ax : 1.46991 - ax;
+    else if (q2.y < -0.125) s = 0.5 + 0.07 * (atan(q2.y + 0.125, ax - 0.5) + 1.5707963);
+    else if (q2.y <= 0.125) s = 0.73496 + q2.y;
+    else s = 0.85996 + 0.07 * atan(q2.y - 0.125, ax - 0.5);
+    float front = uTMark * 1.46991, ds = (s - front) / 0.07;
+    float drawn = 1.0 - smoothstep(front - fx * 1.5, front + fx * 1.5, s);
+    float head = (ds < 0.0 ? exp(-ds * ds * 0.2) : exp(-ds * ds * 9.0)) * (1.0 - smoothstep(0.82, 1.0, uTMark));
+    col = mix(col, YEL, m * drawn * isF);
+    col += mix(YEL, vec3(1.0), 0.35) * (m * 0.9 + 0.5 * exp(-abs(sd - 0.07) / (fx * 5.0))) * head * isF;
   }
   col += (h12(gl_FragCoord.xy + fract(uTime * 13.1) * 113.0) - 0.5) * 0.02;
   gl_FragColor = vec4(col * uFade, 1.0);
 }`;
-  const BASE = { time: 0, pos: [0, 1.3, 0], yaw: 0, pitch: -0.6, roll: 0, fovY: 50 * DEG, depth: 1.6, wallZ: 1e5, poolW: 1e5, poolL: 1e5, fog: 1, expo: 1, hud: 0, hudFar: 4, head: 0, headDir: [0, 1], tmark: 0, fade: 1, shaft: 1, map: 0, laneX: 0, line: [-1e5, 1e5], vig: 0.55, rope: 1, focus: 1, sat: 0.92, fogC: [0.0025, 0.030, 0.042], flow: 0 };
+  const BASE = { time: 0, pos: [0, 1.3, 0], yaw: 0, pitch: -0.6, roll: 0, fovY: 50 * DEG, depth: 1.6, wallZ: 1e5, poolW: 1e5, poolL: 1e5, fog: 1, expo: 1, hud: 0, hudFar: 4, tipSoft: 1.8, head: 0, headDir: [0, 1], tmark: 0, fade: 1, shaft: 1, map: 0, laneX: 0, line: [-1e5, 1e5], vig: 0.55, rope: 1, focus: 1, sat: 0.92, fogC: [0.0025, 0.030, 0.042], flow: 0 };
   const WATER = { sat: 0.85, fogC: [0.004, 0.035, 0.05] };
-  const UNIFORMS = ["uRes", "uTan", "uLine", "uHeadDir", "uPos", "uF", "uR", "uU", "uTime", "uDepth", "uWallZ", "uPoolW", "uPoolL", "uFog", "uExpo", "uHud", "uHudFar", "uHead", "uTMark", "uFade", "uShaft", "uMap", "uLaneX", "uVig", "uRope", "uSat", "uFogC", "uFlow", "uCaus"];
+  const UNIFORMS = ["uRes", "uTan", "uLine", "uHeadDir", "uPos", "uF", "uR", "uU", "uTime", "uDepth", "uWallZ", "uPoolW", "uPoolL", "uFog", "uExpo", "uHud", "uHudFar", "uTipSoft", "uHead", "uTMark", "uFade", "uShaft", "uMap", "uLaneX", "uVig", "uRope", "uSat", "uFogC", "uFlow", "uCaus"];
 
   function basis(s) {
     const cy = Math.cos(s.yaw), sy = Math.sin(s.yaw), cp = Math.cos(s.pitch), sp = Math.sin(s.pitch), cr = Math.cos(s.roll), sr = Math.sin(s.roll);
@@ -740,7 +751,7 @@ void main() {
         gl.uniform2f(u.uLine, s.line[0], s.line[1]); gl.uniform2f(u.uHeadDir, s.headDir[0], s.headDir[1]);
         gl.uniform3fv(u.uPos, s.pos); gl.uniform3fv(u.uF, b.f); gl.uniform3fv(u.uR, b.r); gl.uniform3fv(u.uU, b.u);
         gl.uniform1f(u.uTime, s.time); gl.uniform1f(u.uDepth, s.depth); gl.uniform1f(u.uWallZ, s.wallZ); gl.uniform1f(u.uPoolW, s.poolW); gl.uniform1f(u.uPoolL, s.poolL);
-        gl.uniform1f(u.uFog, s.fog); gl.uniform1f(u.uExpo, s.expo); gl.uniform1f(u.uHud, s.hud); gl.uniform1f(u.uHudFar, s.hudFar); gl.uniform1f(u.uHead, s.head);
+        gl.uniform1f(u.uFog, s.fog); gl.uniform1f(u.uExpo, s.expo); gl.uniform1f(u.uHud, s.hud); gl.uniform1f(u.uHudFar, s.hudFar); gl.uniform1f(u.uTipSoft, s.tipSoft); gl.uniform1f(u.uHead, s.head);
         gl.uniform1f(u.uTMark, s.tmark); gl.uniform1f(u.uFade, s.fade); gl.uniform1f(u.uShaft, s.shaft); gl.uniform1f(u.uMap, s.map); gl.uniform1f(u.uLaneX, s.laneX);
         gl.uniform1f(u.uVig, s.vig); gl.uniform1f(u.uRope, s.rope); gl.uniform1f(u.uSat, s.sat); gl.uniform3fv(u.uFogC, s.fogC); gl.uniform1f(u.uFlow, s.flow);
         gl.activeTexture(gl.TEXTURE0); gl.uniform1i(u.uCaus, 0);
@@ -803,7 +814,7 @@ void main() {
   let mx = 0, my = 0;
   if (fine && !reduce) addEventListener("pointermove", e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
   const WB = [4.6, 3.6, 2.6, 1.6];
-  const P = { ys: -1, flow: 0, t0: -1, yaw: 0, pitch: 0, n: 0, txt: "", op: "", so: "", bo: "", sig: "", mp: "", ml: "", mon: null };
+  const P = { ys: -1, flow: 0, tm: 0, t0: -1, yaw: 0, pitch: 0, n: 0, txt: "", op: "", so: "", bo: "", sig: "", mp: "", ml: "", mon: null };
   const S = { a: 0, target: reduce ? 0 : 7, auto: !reduce, idle: 0, lastTap: -9, prevAbs: 0, rate: 0, st: "", side: 0, deg: -1, user: false };
   function readout(ab, st, side) {
     const d = Math.round(ab);
@@ -884,6 +895,11 @@ void main() {
     if (fade < 0.004) { if (P.black && !v.dirty) return null; P.black = true; } else P.black = false;
     if (reduce) { const sig = [Math.round(ys), w, h, Math.round(S.a)].join(); if (!v.dirty && sig === P.sig) return null; P.sig = sig; }
     const intro = reduce ? 1 : smooth(0, 2.8, T);
+    // the yellow line runs ahead to the T; only when it touches the T does the outline draw itself around it
+    const hudFar = mix(mix(3.4, 4.4, wSteer), 3.4, wWall), tipSoft = mix(0.45 * hudFar, 0.25, wWall);
+    const reached = wWall > 0.5 && z + hudFar - tipSoft * 0.5 >= 22.68;
+    P.tm = reduce ? (reached ? 1 : 0) : clamp(P.tm + (reached ? dt / 1.1 : -dt / 0.6), 0, 1);
+    const tmark = P.tm < 0.5 ? 4 * P.tm * P.tm * P.tm : 1 - Math.pow(2 - 2 * P.tm, 3) / 2;
     const fovY = fovFor(w / h, mix(50, 52, wWall) * DEG);
     const pitch = mix(mix(-0.56 - P.pitch * m, -0.68, wSteer), -0.5, wWall) - 0.1 * (1 - intro);
     const drift = (P.yaw + Math.sin(T * 0.31) * 0.018) * wHero + Math.sin(T * 0.43) * 0.012 * (1 - wHero);
@@ -892,8 +908,8 @@ void main() {
       pos: [Math.sin(T * 0.23) * 0.04 * m * (1 - wSteer), 1.3 + 0.22 * (1 - intro) + Math.sin(T * 1.9) * 0.01 * m, z],
       yaw: S.a * DEG * wSteer + drift * m * (1 - wSteer), pitch: lookDown(pitch, fovY), roll: Math.sin(T * 0.95) * 0.014 * m * (1 - wSteer),
       wallZ: 25, line: [2, 23], fade,
-      hud: Math.max(0.8 * smooth(3.4, 5, T) * wHero, wLane), hudFar: mix(mix(3.4, 4.4, wSteer), 3.2, wWall),
-      head: wSteer, headDir: [Math.sin(S.a * DEG), Math.cos(S.a * DEG)], tmark: smooth(6.4, 5.6, dW) * wWall,
+      hud: Math.max(0.8 * smooth(3.4, 5, T) * wHero, wLane), hudFar, tipSoft,
+      head: wSteer, headDir: [Math.sin(S.a * DEG), Math.cos(S.a * DEG)], tmark,
       fog: mix(mix(2.2, 2.4, wSteer), 1.9, wWall), expo: mix(1.15, 1.1, wSteer), shaft: 0.35, vig: mix(0.7, 0.6, wLane)
     });
   });
