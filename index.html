@@ -103,8 +103,10 @@ main, footer { position: relative; z-index: 2; }
 /* Push-off */
 .hero { position: relative; height: 100vh; height: 100svh; min-height: 560px; }
 .hero-copy { position: absolute; left: 0; right: 0; top: clamp(112px, 17vh, 210px); text-align: center; text-shadow: 0 2px 40px rgba(0, 0, 0, .3); }
-.hero h1 { font-size: clamp(64px, 11.6vw, 180px); line-height: .9; letter-spacing: -.056em; }
-.hero p { margin: 24px auto 0; font-size: clamp(18px, 1.6vw, 22px); color: #ececf0; max-width: 30ch; }
+.hero h1 { font-size: clamp(44px, 13.5vw, 176px); line-height: .9; letter-spacing: -.056em; }
+.hero p { margin: 28px auto 0; font-size: clamp(18px, 1.6vw, 22px); color: #ececf0; max-width: 30ch; }
+.cue { position: absolute; left: 0; right: 0; bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px)); width: 56px; height: 56px; margin-inline: auto; display: grid; place-items: center; color: #fff; border-radius: 50%; }
+.cue svg { width: 30px; height: 30px; filter: drop-shadow(0 1px 8px rgba(0, 0, 0, .35)); }
 
 /* The number, over darkened water */
 .stat { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 52px; padding-top: clamp(120px, 26vh, 280px); padding-bottom: clamp(120px, 26vh, 280px); }
@@ -114,7 +116,7 @@ main, footer { position: relative; z-index: 2; }
 
 /* Feel the line, and the wall: full-screen moments held while you scroll */
 .steer { position: relative; height: 230vh; height: 230svh; }
-.wall { position: relative; height: 300vh; height: 300svh; }
+.wall { position: relative; height: 220vh; height: 220svh; }
 .pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .steer .pin { touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; }
 .steer .pin:active { cursor: grabbing; }
@@ -154,8 +156,9 @@ main, footer { position: relative; z-index: 2; }
 .say { min-width: 0; }
 .person h3 { font-size: clamp(42px, 5.4vw, 80px); line-height: .96; letter-spacing: -.05em; }
 .p-role { margin-top: 16px; font: 500 clamp(18px, 1.6vw, 21px)/1.3 var(--display); letter-spacing: -.01em; color: var(--accent); }
-.swim { margin-top: 4px; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.4; color: #c7c7cc; }
-.swim b { font-weight: 500; color: var(--fg); }
+.years { display: flex; align-items: center; gap: 14px; margin-top: clamp(28px, 3vw, 40px); }
+.years b { font: 500 clamp(44px, 4.2vw, 62px)/.8 var(--display); letter-spacing: -.06em; }
+.years span { font: 500 clamp(16px, 1.3vw, 18px)/1.2 var(--display); letter-spacing: -.01em; }
 .quote { margin: clamp(26px, 3vw, 40px) 0 0; font: 500 clamp(24px, 2.5vw, 36px)/1.22 var(--display); letter-spacing: -.02em; text-indent: -.42em; text-wrap: pretty; max-width: 24ch; }
 
 /* Why: a statement that lights up word by word as you scroll */
@@ -166,6 +169,15 @@ main, footer { position: relative; z-index: 2; }
 .why-text .w { color: rgb(245 245 247 / var(--a, .16)); text-shadow: 0 0 28px rgb(255 255 255 / calc(var(--g, 0) * .55)); }
 
 /* Contact */
+.sponsors { text-align: center; padding-top: clamp(140px, 22vh, 260px); }
+.sponsors h2 { font: 500 clamp(19px, 1.7vw, 24px)/1.35 var(--display); letter-spacing: -.012em; color: #c7c7cc; }
+.sponsor-list { list-style: none; margin: clamp(28px, 3.2vw, 44px) auto 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 28px); max-width: 980px; }
+.sponsor { display: grid; gap: 16px; min-width: 0; }
+.plate { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 3 / 2; padding: 13% 15%; border-radius: 24px; background: #f5f5f7; }
+.plate img { display: block; width: 100%; height: 100%; min-width: 0; object-fit: contain; }
+.plate.tall img { height: 88%; }
+.sponsor-name { font: 500 clamp(17px, 1.5vw, 20px)/1.3 var(--display); letter-spacing: -.01em; }
+@media (max-width: 640px) { .sponsor-list { grid-template-columns: minmax(0, 300px); justify-content: center; } }
 .contact { text-align: center; padding-top: clamp(150px, 24vh, 280px); padding-bottom: clamp(110px, 18vh, 200px); }
 .contact h2 { font-size: clamp(64px, 11vw, 170px); line-height: .9; letter-spacing: -.056em; }
 .mail { margin-top: clamp(30px, 3.2vw, 46px); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
@@ -220,6 +232,9 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
 @media (prefers-reduced-motion: no-preference) {
   .js .hero h1 { animation: rise 1.6s .35s var(--ease) both; }
   .js .hero p { animation: rise 1.6s .55s var(--ease) both; }
+  .js .cue { animation: rise 1.6s .9s var(--ease) both; }
+  .cue svg { animation: bob 2.4s 2.6s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(-3px); } 50% { transform: translateY(5px); } }
 }
 @keyframes rise { from { opacity: .55; transform: translateY(26px); } }
 </style>
@@ -247,12 +262,13 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
 <main>
   <section class="hero" id="top" aria-label="SwimVision1">
     <div class="hero-copy wrap">
-      <h1>Swim straight.</h1>
+      <h1>SwimVision1</h1>
       <p>Smart goggles for blind and partially sighted swimmers.</p>
     </div>
+    <a class="cue" href="#who" aria-label="Scroll down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6"/></svg></a>
   </section>
 
-  <section class="wrap stat" aria-label="Who it is for">
+  <section class="wrap stat" id="who" aria-label="Who it is for">
     <div class="n" aria-hidden="true"><span id="count">338</span>M</div>
     <p><span class="sr">338 million </span>people are blind or partially sighted.<button class="fn" type="button" data-legal="disclaimer" aria-label="Source">1</button></p>
   </section>
@@ -261,7 +277,7 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
     <div class="pin" id="steer-pin">
       <div class="pin-top wrap">
         <h2 class="h2" id="try-title">Feel the line.</h2>
-        <p class="line">Drift past 4° and the temple on that side taps.</p>
+        <p class="line">The goggles see the line.<br>Taps keep you straight.</p>
       </div>
       <div class="hint" id="hint" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
@@ -288,7 +304,7 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
         <p class="line">The T, 2 m before the wall, starts a countdown.</p>
       </div>
       <div class="pin-bottom wrap" aria-hidden="true">
-        <div class="dist" id="dist">10.0<small> m</small></div>
+        <div class="dist" id="dist">7.0<small> m</small></div>
         <div class="beats"><i class="beat"></i><i class="beat"></i><i class="beat"></i><i class="beat long"></i></div>
       </div>
     </div>
@@ -309,8 +325,8 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
         <div class="say">
           <h3>Teoman Civici</h3>
           <p class="p-role">Co-founder</p>
-          <p class="swim"><b>12 years</b> of competitive swimming</p>
           <blockquote class="quote">“Swimming gave me strength, calm and freedom. No one should miss out on that because they can’t see the line.”</blockquote>
+          <p class="years"><b>12</b><span>years of<br>competitive swimming</span></p>
         </div>
       </article>
       <article class="person flip" data-photo="filip">
@@ -318,17 +334,26 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
         <div class="say">
           <h3>Filip Ionescu</h3>
           <p class="p-role">Co-founder</p>
-          <p class="swim"><b>12 years</b> of competitive swimming</p>
           <blockquote class="quote">“The best technology disappears. In the water you should feel the line, not the goggles.”</blockquote>
+          <p class="years"><b>12</b><span>years of<br>competitive swimming</span></p>
         </div>
       </article>
     </div>
   </section>
 
+  <section class="wrap sponsors" id="sponsors" aria-labelledby="sponsors-title">
+    <h2 id="sponsors-title">Supported by</h2>
+    <ul class="sponsor-list">
+      <li class="sponsor"><span class="plate tall"><img src="sponsors/lions.svg" alt="" width="67" height="64" loading="lazy"></span><span class="sponsor-name">Lions Club Wien</span></li>
+      <li class="sponsor"><span class="plate"><img src="sponsors/stadt-wien.svg" alt="" width="311" height="142" loading="lazy"></span><span class="sponsor-name">Bäder der Stadt Wien</span></li>
+      <li class="sponsor"><span class="plate"><img src="sponsors/blindsports-austria.svg" alt="" width="1022" height="421" loading="lazy"></span><span class="sponsor-name">Blindsports Austria</span></li>
+    </ul>
+  </section>
+
   <section class="wrap contact" id="contact" aria-labelledby="contact-title">
     <h2 id="contact-title">Let's talk.</h2>
     <div class="mail">
-      <a class="btn primary addr" id="addr" href="mailto:civite19@theresianum.ac.at">civite19@theresianum.ac.at</a>
+      <a class="btn primary addr" id="addr" href="mailto:contact@swimb.eu">contact@swimb.eu</a>
       <button class="btn glass" id="copy" type="button">Copy</button>
     </div>
   </section>
@@ -353,7 +378,7 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
       <h3>Imprint</h3>
       <p>SWIM-B is a student team from Vienna, Austria: Teoman Civici and Filip Ionescu.</p>
       <p>Postal address: [to be added before launch]</p>
-      <p>Contact: civite19@theresianum.ac.at</p>
+      <p>Contact: contact@swimb.eu</p>
     </section>
     <section id="privacy">
       <h3>Privacy</h3>
@@ -606,7 +631,7 @@ void main() {
   col *= 1.0 - uVig * smoothstep(0.55, 1.5, length(ndc * vec2(0.9, 1.05)));
   if (uHud > 0.0) {
     float dx = abs(p.x - uLaneX), ahead = p.z - ro.z;
-    float rng = isF * smoothstep(0.2, 0.9, ahead) * (1.0 - smoothstep(uHudFar * 0.55, uHudFar, ahead)) * step(uLine.x, p.z) * step(p.z, uLine.y);
+    float rng = isF * smoothstep(0.2, 0.9, ahead) * (1.0 - smoothstep(uHudFar * 0.55, uHudFar, ahead)) * step(uLine.x, p.z) * step(p.z, uLine.y - 0.32);
     col = mix(col, YEL, (1.0 - smoothstep(fx * 1.1, fx * 2.2, dx)) * rng * uHud);
     col += YEL * exp(-dx / (fx * 10.0)) * rng * uHud * 0.2;
   }
@@ -808,7 +833,7 @@ void main() {
     const wTeam = smooth(A.dark - vh, A.dark - vh * 0.25, ys);
     const wLane = smooth(A.steer - vh * 0.5, A.steer - vh * 0.05, ys) * (1 - wTeam);
     // how far down the lane: 3 m at the top of the page, the turn at the end of the wall section
-    const z = Math.min(23.7, along([[0, 3], [A.steer, 8], [steerEnd, 13], [A.wall, 14.5], [wallEnd, 23.7]], ys));
+    const z = Math.min(23.7, along([[0, 3], [A.steer, 8], [steerEnd, 13], [A.wall, 18], [wallEnd, 23.7]], ys));
     const dW = 25 - z;
     // taps and beats only fire once the view has caught up with the scroll (not while it races through after a jump)
     const settled = Math.abs(y - ys) < vh * 0.35;
