@@ -174,7 +174,9 @@ main, footer { position: relative; z-index: 2; }
 /* Contact */
 .sponsors { text-align: center; padding-top: clamp(140px, 22vh, 260px); }
 .sponsors h2 { font: 500 clamp(19px, 1.7vw, 24px)/1.35 var(--display); letter-spacing: -.012em; color: #c7c7cc; }
-.sponsor-list { list-style: none; margin: clamp(28px, 3.2vw, 44px) auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(16px, 2.2vw, 28px); max-width: 980px; }
+.sponsor-groups { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(56px, 8vw, 96px) clamp(24px, 4vw, 64px); }
+.sponsor-group { flex: 0 1 308px; min-width: 0; }
+.sponsor-list { list-style: none; margin: clamp(20px, 2.4vw, 32px) auto 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(16px, 2.2vw, 28px); max-width: 980px; }
 .sponsor { display: grid; gap: 16px; flex: 0 1 308px; min-width: 0; }
 .plate { position: relative; display: block; width: 100%; aspect-ratio: 3 / 2; border-radius: 24px; background: #f5f5f7; }
 .plate img { position: absolute; left: 50%; top: 50%; width: var(--w, 60%); height: auto; transform: translate(-50%, -50%); }
@@ -342,11 +344,21 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
     </div>
   </section>
 
-  <section class="wrap sponsors" id="sponsors" aria-labelledby="sponsors-title">
-    <h2 id="sponsors-title">Supported by</h2>
-    <ul class="sponsor-list">
-      <li class="sponsor"><span class="plate" style="--w: 38%"><img src="sponsors/lions.svg" alt="" width="67" height="64" loading="lazy"></span><span class="sponsor-name">Lions Club Wien</span></li>
-    </ul>
+  <section class="wrap sponsors" id="sponsors" aria-label="Supporters and partners">
+    <div class="sponsor-groups">
+      <div class="sponsor-group">
+        <h2>Supported by</h2>
+        <ul class="sponsor-list">
+          <li class="sponsor"><span class="plate" style="--w: 38%"><img src="sponsors/lions.svg" alt="" width="67" height="64" loading="lazy"></span><span class="sponsor-name">Lions Club Wien</span></li>
+        </ul>
+      </div>
+      <div class="sponsor-group">
+        <h2>In cooperation with</h2>
+        <ul class="sponsor-list">
+          <li class="sponsor"><span class="plate" style="--w: 69%"><img src="sponsors/blindsports-austria.png" alt="" width="1110" height="507" loading="lazy"></span><span class="sponsor-name">Blindsports Austria</span></li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <section class="wrap contact" id="contact" aria-labelledby="contact-title">
