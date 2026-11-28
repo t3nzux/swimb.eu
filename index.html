@@ -118,8 +118,8 @@ main, footer { position: relative; z-index: 2; }
 .fn { appearance: none; border: 0; background: none; cursor: pointer; padding: 2px 4px; margin-left: 2px; color: #c7c7cc; font: 500 .5em/1 var(--body); vertical-align: super; }
 
 /* Feel the line, and the wall: full-screen moments held while you scroll */
-.steer { position: relative; height: 230vh; height: 230svh; }
-.wall { position: relative; height: 220vh; height: 220svh; }
+.steer { position: relative; height: 160vh; height: 160svh; }
+.wall { position: relative; height: 160vh; height: 160svh; }
 .pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .steer .pin { touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; }
 .steer .pin:active { cursor: grabbing; }
@@ -304,7 +304,7 @@ kbd { display: inline-grid; place-items: center; min-width: 32px; height: 30px; 
         <p class="line">The T, 2 m before the wall, starts a countdown.</p>
       </div>
       <div class="pin-bottom wrap" aria-hidden="true">
-        <div class="dist" id="dist">7.0<small> m</small></div>
+        <div class="dist" id="dist">6.0<small> m</small></div>
         <div class="beats"><i class="beat"></i><i class="beat"></i><i class="beat"></i><i class="beat long"></i></div>
       </div>
     </div>
@@ -844,7 +844,7 @@ void main() {
     const wTeam = smooth(A.dark - vh, A.dark - vh * 0.25, ys);
     const wLane = smooth(A.steer - vh * 0.5, A.steer - vh * 0.05, ys) * (1 - wTeam);
     // how far down the lane: 3 m at the top of the page, the turn at the end of the wall section
-    const z = Math.min(23.7, along([[0, 3], [A.steer, 8], [steerEnd, 13], [A.wall, 18], [wallEnd, 23.7]], ys));
+    const z = Math.min(23.7, along([[0, 3], [A.steer, 8], [steerEnd, 13], [A.wall, 19], [wallEnd, 23.7]], ys));
     const dW = 25 - z;
     // taps and beats only fire once the view has caught up with the scroll (not while it races through after a jump)
     const settled = Math.abs(y - ys) < vh * 0.35;
@@ -874,7 +874,7 @@ void main() {
     const txt = n === 4 ? "Turn." : dW.toFixed(1);
     if (txt !== P.txt) { P.txt = txt; distEl.innerHTML = n === 4 ? "Turn." : `${txt}<small> m</small>`; beatEls.forEach((b, i) => b.classList.toggle("on", i < n)); }
     // on tall screens the T rises into the words, so the words step aside as the T arrives
-    const op = w / h < 1 ? (1 - smooth(6.6, 5.6, dW)).toFixed(2) : "";
+    const op = w / h < 1 ? (1 - smooth(5.5, 4.7, dW)).toFixed(2) : "";   // gone before the outline draws (from ~5.4 m)
     if (op !== P.op) { P.op = op; wallCopy.style.opacity = op; }
     setOpacity(scrimT, "so", Math.max(wHero, wLane));
     setOpacity(scrimB, "bo", wLane * 0.95);
